@@ -23,7 +23,7 @@ pep257 :
 runserver : $(VENV_ACTIVATE)
 	( \
 		source $(VENV_ACTIVATE) && \
-		python extragrant/manage.py runserver 0.0.0.0:8000 \
+		python extragrant/manage.py runserver 127.0.0.1:8000 \
 	)
 
 $(VENV_ACTIVATE) :

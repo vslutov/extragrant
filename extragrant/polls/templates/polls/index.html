@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block "content" %}
+  <table class="table">
+    <tr>
+      <th>{% trans "Question" %}</th>
+      <th>{% trans "Average score" %}</th>
+    </tr>
+    {% for question in questions %}
+      <tr>
+        <td><a href="{% url 'polls:result' question.id  %}">{{question}}</a></td>
+        <td>{{question.average_score}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
