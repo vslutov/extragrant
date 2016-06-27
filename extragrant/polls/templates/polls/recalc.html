@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h1>{% block title %} {% trans "Are you sure want recalc polls score?" %} {% endblock %}</h1>
+  <form method="post" action="{% url 'polls:recalc' %}">
+    {% csrf_token %}
+    <input type="hidden" name="sure" value="1">
+	<a href="{% url 'polls:index' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+    <button type="submit" class="btn btn-danger">{% trans 'Recalc' %}</button>
+  </form>
+{% endblock %}

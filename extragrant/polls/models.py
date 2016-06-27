@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -25,26 +26,16 @@ class Question(models.Model):
 
 @python_2_unicode_compatible
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-
-    ZERO = 0
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-    FIVE = 5
-
-    SCORE_CHOICES = (
-         (ZERO, '0'),
-         (ONE, '1'),
-         (TWO, '2'),
-         (THREE, '3'),
-         (FOUR, '4'),
-         (FIVE, '5'),
-    )
-
-    score_choice = models.IntegerField(choices=SCORE_CHOICES, default=ZERO)
-    votes = models.IntegerField(default=0)
+    score = models.FloatField(default=0)
 
     def __str__(self):
-        return str(self.score_choice)
+        return str(self.score)
+
+@python_2_unicode_compatible
+class Vote(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return unicode(self.user) + ' -> ' + unicode(self.question) + ' : ' + unicode(self.choice)

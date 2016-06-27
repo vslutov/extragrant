@@ -1,18 +1,30 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 from .models import Question
 
+# Create your views here.
+
 def index(request):
     questions = Question.objects.all()
-    return render(request, 'polls/index.html', {'questions': questions, 'title': _("Question list")})
+    return render(request, 'polls/index.html', {'questions': questions})
 
 def result(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/detail.html', {'question': question, 'title': _("Question result")})
+    return render(request, 'polls/result.html', {'question': question})
 
 def vote(request, question_id):
-    return HttpResponse("You 're voting a question {id}".format(id=question_id))
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/vote.html', {'question': question})
 
-# Create your views here.
+def recalc(request):
+    if 'sure' in request.POST and request.POST['sure'] == "1":
+        for question in Question.objects.all():
+            votes = question.vote_set.count()
+            question.average_score = float(sum(vote.choice.score for vote in question.vote_set.all())) / votes
+            question.save()
+        return HttpResponseRedirect(reverse('polls:index'))
+    else:
+        return render(request, 'polls/recalc.html')

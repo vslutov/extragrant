@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Question, Choice, Criterion
+from .models import Question, Choice, Criterion, Vote
 
 # Register your models here.
 admin.site.register(Question)
 admin.site.register(Choice)
 admin.site.register(Criterion)
+admin.site.register(Vote)

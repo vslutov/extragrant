@@ -26,7 +26,6 @@ SECRET_KEY = '7*0m&ud0&#6up7wt6ry5t26wha)m-2tyey*eo&(id$her(7#)t'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-print(__file__)
 
 # Application definition
 
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -104,6 +104,9 @@ if DEBUG is False:
 else:
     AUTH_PASSWORD_VALIDATORS = []
 
+ACCOUNT_ACTIVATION_DAYS = 7
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
