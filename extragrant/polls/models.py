@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -13,7 +14,8 @@ class Criterion(models.Model):
     description = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.code + ' - ' + self.description
+        return (_("{code} : {description}")
+                .format(code=self.code, description=self.description))
 
 @python_2_unicode_compatible
 class Question(models.Model):
@@ -39,7 +41,9 @@ class Vote(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return unicode(self.user) + ' -> ' + unicode(self.question) + ' : ' + unicode(self.choice)
+        return (_("{user} voted at {choice} by {question}")
+                .format(user=self.user, question=self.question,
+                    choice=self.choice))
 
 @python_2_unicode_compatible
 class Count(models.Model):
@@ -48,4 +52,15 @@ class Count(models.Model):
     count = models.IntegerField(default=0)
 
     def __str__(self):
-        return unicode(self.question) + ' -> ' + unicode(self.choice) + ' : ' + unicode(self.count)
+        return (_("{count} users voted at {choice} by {question}")
+                .format(count=self.count, question=self.question,
+                        choice=self.choice))
+
+@python_2_unicode_compatible
+class Voting(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return (_('{user} voted at {time}')
+                .format(user=self.user, time=self.last_modified))
