@@ -5,4 +5,3 @@ from .models import Question, Choice, Criterion, Vote
 admin.site.register(Question)
 admin.site.register(Choice)
 admin.site.register(Criterion)
-admin.site.register(Vote)

@@ -4,9 +4,23 @@
 {% block content %}
   <h1>{% block title %} {% trans "Poll result" %} {% endblock %}</h1>
   <p>
-    {% trans "You 're looking question:" %} {{question}}.
+    {% trans "You 're looking question:" %} {{ question }}.
   </p>
   <p>
-    {% trans "Average score:" %} {{question.average_score}}.
+    {% trans "Average score:" %} {{ question.average_score }}.
   </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 hidden-xs">
+        <div id="count_chart" style="height: 300px;"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+  <script>
+    $(function() {
+        new Chartkick.ColumnChart("count_chart", {{ count_chart }});
+    })
+  </script>
 {% endblock %}

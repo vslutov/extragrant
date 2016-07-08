@@ -36,6 +36,16 @@ class Vote(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return unicode(self.user) + ' -> ' + unicode(self.question) + ' : ' + unicode(self.choice)
+
+@python_2_unicode_compatible
+class Count(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return unicode(self.question) + ' -> ' + unicode(self.choice) + ' : ' + unicode(self.count)
