@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <h1>{% block title %} {% trans "Voting" %} {% endblock %}</h1>
+  {% if error_message %}<div class="alert alert-danger" role="alert">{{ error_message }}</div>{% endif %}
+
+  <form action="{% url 'polls:voting' %}" method="post" class="form-horisontal container">
+    {% csrf_token %}
+    {% for question in questions %}
+	  <div class="form-group container">
+        <label for="question_{{question.id}}" class="col-sm-4 control-label">{{question}}</label>
+        <div class="col-sm-8">
+      	  {% for choice in choices %}
+            <label class="radio-inline">
+              <input type="radio" name="question_{{question.id}}" id="question_{{question.id}}_{{choice_id}}" value="{{choice.id}}"> {{choice}}
+            </label>
+	  	  {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  <input type="submit" value="Vote" />
+  </form>
+{% endblock %}
+

@@ -18,9 +18,8 @@ def result(request, question_id):
         count_chart.append([count.choice.score, count.count])
     return render(request, 'polls/result.html', {'question': question, 'count_chart': count_chart})
 
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/vote.html', {'question': question})
+def voting(request):
+    return render(request, 'polls/voting.html', {'questions': Question.objects.all(), 'choices': Choice.objects.all()})
 
 def recalc(request):
     if 'sure' in request.POST and request.POST['sure'] == "1":
