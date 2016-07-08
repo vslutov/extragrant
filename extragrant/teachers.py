@@ -10,9 +10,9 @@ USAGE = "usage: {prog} input.csv"
 
 class Teacher(object):
 
-    PARAMS = 5
     PARAM_DICT = {'а': 0, 'б': 1, 'в': 2}
     EPS = 0.00001
+    MIN_COUNT = 5
 
     def __init__(self, name, subject):
         self.name = name
@@ -32,7 +32,7 @@ class Teacher(object):
                 self.params[i][j] += 1
 
     def score(self, i):
-        if self.count < 5:
+        if self.count < self.MIN_COUNT:
             return 'н/д'
         if self.params[i][2] / self.count >= 0.5 - self.EPS:
             return 2 # '2 ({c}/{a} = {p:.0f}%)'.format(c=self.params[i][2], a=self.count, p=100 * self.params[i][2] / self.count)
@@ -59,9 +59,20 @@ def mutate(c, mutate_dict):
 
 class Lecturer(Teacher):
 
+    PARAMS = 5
+
     def vote(self, data):
         data[0] = mutate(data[0], {'б': 'в', 'в': '-'})
         data[1] = mutate(data[1], {'б': 'в', 'в': '-'})
+        data[4] = mutate(data[4], {'а': 'в', 'б': 'а', 'в': '-'})
+
+        super().vote(data)
+
+class Seminarist(Teacher):
+
+    PARAMS = 8
+
+    def vote(self, data):
         data[4] = mutate(data[4], {'а': 'в', 'б': 'а', 'в': '-'})
 
         super().vote(data)
@@ -80,12 +91,12 @@ def main():
 
         for i, row in enumerate(reader):
             if i > 0:
-                name, subject, data = row[3], row[2], row[4:9]
+                name, subject, data = row[3], row[2], row[4:]
 
                 t = teachers.get(name, None)
 
                 if t is None:
-                    t = teachers[name] = Lecturer(name, subject)
+                    t = teachers[name] = Seminarist(name, subject)
 
                 t.vote(data)
 
